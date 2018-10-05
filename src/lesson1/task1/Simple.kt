@@ -100,6 +100,8 @@ fun thirdDigit(number: Int): Int {
     return number % 1000 / 100
 }
 
+
+
 /**
  * Простая
  *
