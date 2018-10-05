@@ -4,7 +4,7 @@ package lesson2.task1
 import lesson1.task1.discriminant
 import kotlin.math.max
 import kotlin.math.sqrt
-
+import lesson1.task1.sqr
 /**
  * Пример
  *
@@ -110,7 +110,7 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
         firsttower && secondtower -> 3
         else -> 3
     }
-}
+
 
 
 /**
