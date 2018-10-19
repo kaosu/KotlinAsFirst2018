@@ -5,6 +5,7 @@ import lesson1.task1.discriminant
 import kotlin.math.max
 import kotlin.math.sqrt
 import lesson1.task1.sqr
+import kotlin.math.min
 /**
  * Пример
  *
@@ -63,10 +64,11 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    if (age != 111 && age % 10 == 1) "$age год"
-    else {
-        if (age % 100 !in 12..14 && age % 10 in 2..4) "$age года" else "$age лет"
-    }
+   when{
+       age != 111 && age % 10 == 1 && age != 11 -> return "$age год"
+       age % 100 !in 12..14 && age % 10 in 2..4 -> return "$age года"
+       else -> return "$age лет"
+   }
 }
 
 /**
@@ -103,16 +105,7 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int {
-    val firsttower = kingX == rookX1 || kingY == rookY1
-    val secondtower = kingX == rookX2 || kingY == rookY2
-    when {
-        firsttower -> 1
-        secondtower -> 2
-        firsttower && secondtower -> 3
-        else -> 3
-    }
-
+                       rookX2: Int, rookY2: Int): Int = TODO()
 
 
 /**
