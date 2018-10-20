@@ -63,12 +63,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String {
-   when{
-       age != 111 && age % 10 == 1 && age != 11 -> return "$age год"
-       age % 100 !in 12..14 && age % 10 in 2..4 -> return "$age года"
-       else -> return "$age лет"
-   }
+fun ageDescription(age: Int) {
+    when {
+        age != 111 && age % 10 == 1 && age != 11 -> "$age год"
+        age % 100 !in 12..14 && age % 10 in 2..4 -> "$age года"
+        else -> "$age лет"
+    }
 }
 
 /**
@@ -131,19 +131,9 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val hyp = max(max(a, b), c)
-    val cat1 : Double
-    val cat2 : Double
-    if (hyp == a) {
-        cat1 = b
-        cat2 = c
-    } else if (hyp == b){
-        cat1 = a
-        cat2 = c
-    } else {
-        cat1 = a
-        cat2 = b
-    }
+    val hyp = maxOf(a, b, c)
+    val cat1 = minOf(a, b, c)
+    val cat2 = (a + b + c) - (hyp + cat1)
     val cos = (sqr(cat1) + sqr(cat2) - sqr(hyp)) / (2 * cat1 * cat2)
     return when {
         (cos > 0.0 && cos < 1.0) -> 0
@@ -161,7 +151,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when{
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
     c in a..b -> min(b, d) - c
     a in c..d -> min(b, d) - a
     else -> -1
