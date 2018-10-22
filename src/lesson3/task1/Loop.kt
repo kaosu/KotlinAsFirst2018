@@ -2,6 +2,14 @@
 package lesson3.task1
 
 import kotlin.math.sqrt
+import kotlin.math.abs
+import java.lang.Math.pow
+
+
+
+
+
+
 
 /**
  * Пример
@@ -66,15 +74,32 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
-
+fun digitNumber(n: Int): Int {
+    var number = abs(n)
+    var result = 0
+    do {
+        result += 1
+        number /= 10
+    } while (number > 0)
+    return result
+}
 /**
  * Простая
  *
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    var numberFib1 = 1
+    var numberFib2 = 1
+    var numberFib3 = 1
+    for (i in 3..n) {
+        numberFib3 = numberFib1 + numberFib2
+        numberFib1 = numberFib2
+        numberFib2 = numberFib3
+    }
+    return numberFib3
+}
 
 /**
  * Простая
@@ -82,22 +107,31 @@ fun fib(n: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
-
+fun lcm(m: Int, n: Int): Int {
+    var divisor = 1
+    val valN = n
+    val valM = m
+    while ((divisor % valN != 0) || (divisor % valM != 0)) divisor += 1
+    return divisor
+}
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
-
+fun minDivisor(n: Int): Int {
+    var minimal = 2
+    while (n % minimal != 0) {
+        minimal += 1
+    }
+    return minimal
+}
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
-
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 /**
  * Простая
  *
@@ -133,7 +167,6 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * этого для какого-либо начального X > 0.
  */
 fun collatzSteps(x: Int): Int = TODO()
-
 /**
  * Средняя
  *
@@ -159,7 +192,15 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var a = n
+    var result = 0
+    while (a != 0) {
+        result = result * 10 + a % 10
+        a /= 10
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -170,8 +211,7 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
-
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 /**
  * Средняя
  *
@@ -191,7 +231,17 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var q = 1
+    var lenght = 0
+    var a = 0
+    while (lenght < n) {
+        a += 1
+        q = a * a
+        lenght += digitNumber(q)
+    }
+    return (q / (pow(10.0, (lenght - n).toDouble()).toInt()) % 10)
+}
 
 /**
  * Сложная
@@ -202,4 +252,14 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var lenght = 0
+    var a = 0
+    var numeric = 1
+    while (lenght < n) {
+        a += 1
+        numeric = fib(a)
+        lenght += digitNumber(numeric)
+    }
+    return (numeric / (pow(10.0, (lenght - n).toDouble()).toInt()) % 10)
+}
