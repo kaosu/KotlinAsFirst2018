@@ -276,108 +276,83 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String {
-    var string1 = ""
-    var string2 = ""
-    val more4 = n / 1000
-    val less4 = n % 1000
-    when {
-        more4 / 100 == 1 -> string1 += "сто "
-        more4 / 100 == 2 -> string1 += "двести "
-        more4 / 100 == 3 -> string1 += "триста "
-        more4 / 100 == 4 -> string1 += "четыреста "
-        more4 / 100 == 5 -> string1 += "пятьсот "
-        more4 / 100 == 6 -> string1 += "шестьсот "
-        more4 / 100 == 7 -> string1 += "семьсот "
-        more4 / 100 == 8 -> string1 += "восемьсот "
-        more4 / 100 == 9 -> string1 += "девятьсот "
-    }
-    when {
-        more4 % 100 == 10 -> string1 += "десять "
-        more4 % 100 == 11 -> string1 += "одиннадцать "
-        more4 % 100 == 12 -> string1 += "двенадцать "
-        more4 % 100 == 13 -> string1 += "тринадцать "
-        more4 % 100 == 14 -> string1 += "четырнадцать "
-        more4 % 100 == 15 -> string1 += "пятнадцать "
-        more4 % 100 == 16 -> string1 += "шестнадцать "
-        more4 % 100 == 17 -> string1 += "семнадцать "
-        more4 % 100 == 18 -> string1 += "восемнадцать "
-        more4 % 100 == 19 -> string1 += "девятнадцать "
-        more4 % 100 / 10 == 2 -> string1 += "двадцать "
-        more4 % 100 / 10 == 3 -> string1 += "тридцать "
-        more4 % 100 / 10 == 4 -> string1 += "сорок "
-        more4 % 100 / 10 == 5 -> string1 += "пятьдесят "
-        more4 % 100 / 10 == 6 -> string1 += "шестьдесят "
-        more4 % 100 / 10 == 7 -> string1 += "семьдесят "
-        more4 % 100 / 10 == 8 -> string1 += "восемьдесят "
-        more4 % 100 / 10 == 9 -> string1 += "девяносто "
-    }
-    when {
-        (more4 % 10 == 1) && (more4 % 100 != 11) -> string1 += "одна "
-        (more4 % 10 == 2) && (more4 % 100 != 12) -> string1 += "две "
-        (more4 % 10 == 3) && (more4 % 100 != 13) -> string1 += "три "
-        (more4 % 10 == 4) && (more4 % 100 != 14) -> string1 += "четыре "
-        (more4 % 10 == 5) && (more4 % 100 != 15) -> string1 += "пять "
-        (more4 % 10 == 6) && (more4 % 100 != 16) -> string1 += "шесть "
-        (more4 % 10 == 7) && (more4 % 100 != 17) -> string1 += "семь "
-        (more4 % 10 == 8) && (more4 % 100 != 18) -> string1 += "восемь "
-        (more4 % 10 == 9) && (more4 % 100 != 19) -> string1 += "девять "
-    }
-
-    if (more4 % 10 == 1) string1 += "тысяча "
-    if ((more4 % 10 == 2) || (more4 % 10 == 3) || (more4 % 10 == 4)) string1 += "тысячи "
-    else {
-        if ((more4 % 10 != 1) and (more4 != 2) and (more4 != 3) and (more4 != 4) and (more4 > 0)) string1 += "тысяч "
-    }
-    when {
-        less4 / 100 == 1 -> string2 += "сто "
-        less4 / 100 == 2 -> string2 += "двести "
-        less4 / 100 == 3 -> string2 += "триста "
-        less4 / 100 == 4 -> string2 += "четыреста "
-        less4 / 100 == 5 -> string2 += "пятьсот "
-        less4 / 100 == 6 -> string2 += "шестьсот "
-        less4 / 100 == 7 -> string2 += "семьсот "
-        less4 / 100 == 8 -> string2 += "восьмьсот "
-        less4 / 100 == 9 -> string2 += "девятьсот "
-    }
-    when {
-        less4 % 100 == 10 -> string2 += "десять "
-        less4 % 100 == 11 -> string2 += "одиннадцать "
-        less4 % 100 == 12 -> string2 += "двенадцать "
-        less4 % 100 == 13 -> string2 += "тринадцать "
-        less4 % 100 == 14 -> string2 += "четырнадцать "
-        less4 % 100 == 15 -> string2 += "пятнадцать "
-        less4 % 100 == 16 -> string2 += "шестнадцать "
-        less4 % 100 == 17 -> string2 += "семнадцать "
-        less4 % 100 == 18 -> string2 += "восемнадцать "
-        less4 % 100 == 19 -> string2 += "девятнадцать "
-        less4 % 100 / 10 == 2 -> string2 += "двадцать "
-        less4 % 100 / 10 == 3 -> string2 += "тридцать "
-        less4 % 100 / 10 == 4 -> string2 += "сорок "
-        less4 % 100 / 10 == 5 -> string2 += "пятьдесят "
-        less4 % 100 / 10 == 6 -> string2 += "шестьдесят "
-        less4 % 100 / 10 == 7 -> string2 += "семьдесят "
-        less4 % 100 / 10 == 8 -> string2 += "восемьдесят "
-        less4 % 100 / 10 == 9 -> string2 += "девяносто "
-    }
-    when {
-        (less4 % 10 == 1) && (less4 % 100 != 11) -> string2 += "один "
-        (less4 % 10 == 2) && (less4 % 100 != 12) -> string2 += "два "
-        (less4 % 10 == 3) && (less4 % 100 != 13) -> string2 += "три "
-        (less4 % 10 == 4) && (less4 % 100 != 14) -> string2 += "четыре "
-        (less4 % 10 == 5) && (less4 % 100 != 15) -> string2 += "пять "
-        (less4 % 10 == 6) && (less4 % 100 != 16) -> string2 += "шесть "
-        (less4 % 10 == 7) && (less4 % 100 != 17) -> string2 += "семь "
-        (less4 % 10 == 8) && (less4 % 100 != 18) -> string2 += "восемь "
-        (less4 % 10 == 9) && (less4 % 100 != 19) -> string2 += "девять "
-    }
-    if (less4 > 0) {
-        string2 = string2.substring(0, string2.length - 1)
-    } else {
-        string1 = string1.substring(0, string1.length - 1)
-    }
-    return string1 + string2
+fun numeralToRussian(n: Int): String = when (n) {
+    1 -> " один"
+    2 -> " два"
+    3 -> " три"
+    4 -> " четыре"
+    5 -> " пять"
+    6 -> " шесть"
+    7 -> " семь"
+    8 -> " восемь"
+    9 -> " девять"
+    else -> ""
 }
+
+fun threeToRussian(n: Int): String {
+    var x = n / 10
+    var result = numeralToRussian(n % 10)
+    when (x % 10) {
+        1 -> {
+            when (n % 10) {
+                1, 3 -> result = numeralToRussian(n % 10) + "надцать"
+                2 -> result = " двенадцать"
+                0 -> result = " десять"
+                else -> {
+                    var str = numeralToRussian(n % 10)
+                    str = str.substring(0, str.length - 1)
+                    result = str + "надцать"
+                }
+            }
+        }
+        2, 3 -> result = numeralToRussian(x % 10) + "дцать" + result
+        4 -> result = " сорок" + result
+        in 5..8 -> result = numeralToRussian(x % 10) + "десят" + result
+        9 -> result = " девяносто" + result
+    }
+    x /= 10
+    when (x % 10) {
+        1 -> result = " сто" + result
+        2 -> result = " двести" + result
+        3, 4 -> result = numeralToRussian(x % 10) + "ста" + result
+        in 5..9 -> result = numeralToRussian(x % 10) + "сот" + result
+    }
+    return result
+}
+
+
+
+fun russian(n: Int): String {
+    var result = ""
+    when {
+        n / 1000 > 0 -> {
+            result = threeToRussian(n / 1000)
+            when {
+                (n / 1000) % 100 in 10..19 -> result = result + " тысяч"
+                else -> when ((n / 1000) % 10) {
+                    0, 5, 6, 7, 8, 9 -> result = result + " тысяч"
+                    1 -> {
+                        result = result.substring(0, result.length - 4)
+                        result = result + "одна тысяча"
+                    }
+                    2 -> {
+                        result = result.substring(0, result.length - 3)
+                        result = result + "две тысячи"
+                    }
+                    3, 4 -> result = result + " тысячи"
+
+                }
+            }
+        }
+    }
+    result = result +threeToRussian(n % 1000)
+    result = result.substring(1, result.length)
+
+    return result
+
+}
+
+
 
 
 
