@@ -294,11 +294,11 @@ fun threeToRussian(n: Int): String {
     var result = numeralToRussian(n % 10)
     when (x % 10) {
         1 -> {
-            when (n % 10) {
+            when (n % 10){
                 1, 3 -> result = numeralToRussian(n % 10) + "надцать"
                 2 -> result = " двенадцать"
                 0 -> result = " десять"
-                else -> {
+                else ->{
                     var str = numeralToRussian(n % 10)
                     str = str.substring(0, str.length - 1)
                     result = str + "надцать"
@@ -311,7 +311,7 @@ fun threeToRussian(n: Int): String {
         9 -> result = " девяносто" + result
     }
     x /= 10
-    when (x % 10) {
+    when (x % 10){
         1 -> result = " сто" + result
         2 -> result = " двести" + result
         3, 4 -> result = numeralToRussian(x % 10) + "ста" + result
