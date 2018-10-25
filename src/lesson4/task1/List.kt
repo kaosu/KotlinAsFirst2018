@@ -2,7 +2,9 @@
 
 package lesson4.task1
 
+import kotlinx.html.attributes.stringSetDecode
 import lesson1.task1.discriminant
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -122,7 +124,9 @@ fun abs(v: List<Double>): Double = TODO()
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double =
+        if (list.isEmpty()) 0.0 else list.sum() / list.size
+
 
 /**
  * Средняя
@@ -132,7 +136,13 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val x = mean(list)
+    for (i in 0 until list.size) {
+        list[i] -= x
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -141,7 +151,12 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
-fun times(a: List<Double>, b: List<Double>): Double = TODO()
+fun times(a: List<Double>, b: List<Double>): Double {
+    var result = 0.0
+    if (b.isEmpty()) return 0.0
+    else for (i in 0 until b.size) result += a[i] * b[i]
+    return result
+}
 
 /**
  * Средняя
@@ -151,7 +166,12 @@ fun times(a: List<Double>, b: List<Double>): Double = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
  */
-fun polynom(p: List<Double>, x: Double): Double = TODO()
+fun polynom(p: List<Double>, x: Double): Double {
+    if (p.isEmpty()) 0.0
+    var result = 0.0
+    for (i in 0 until p.size) result += p[i] * x.pow(i)
+    return result
+}
 
 /**
  * Средняя
@@ -163,7 +183,11 @@ fun polynom(p: List<Double>, x: Double): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
+fun accumulate(list: MutableList<Double>): MutableList<Double> {
+    for (i in 1 until list.size)
+        list[i] += list[i - 1]
+    return list
+}
 
 /**
  * Средняя
@@ -172,7 +196,20 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    val mList = mutableListOf<Int>()
+    var a = 2
+    var numeric = n
+    while (a <= numeric) {
+        if (numeric % a == 0) {
+            mList.add(a)
+            numeric /= a
+        } else {
+            a++
+        }
+    }
+    return mList
+}
 
 /**
  * Сложная
@@ -181,7 +218,7 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -239,4 +276,111 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    var string1 = ""
+    var string2 = ""
+    val more4 = n / 1000
+    val less4 = n % 1000
+    when {
+        more4 / 100 == 1 -> string1 += "сто "
+        more4 / 100 == 2 -> string1 += "двести "
+        more4 / 100 == 3 -> string1 += "триста "
+        more4 / 100 == 4 -> string1 += "четыреста "
+        more4 / 100 == 5 -> string1 += "пятьсот "
+        more4 / 100 == 6 -> string1 += "шестьсот "
+        more4 / 100 == 7 -> string1 += "семьсот "
+        more4 / 100 == 8 -> string1 += "восемьсот "
+        more4 / 100 == 9 -> string1 += "девятьсот "
+    }
+    when {
+        more4 % 100 == 10 -> string1 += "десять "
+        more4 % 100 == 11 -> string1 += "одиннадцать "
+        more4 % 100 == 12 -> string1 += "двенадцать "
+        more4 % 100 == 13 -> string1 += "тринадцать "
+        more4 % 100 == 14 -> string1 += "четырнадцать "
+        more4 % 100 == 15 -> string1 += "пятнадцать "
+        more4 % 100 == 16 -> string1 += "шестнадцать "
+        more4 % 100 == 17 -> string1 += "семнадцать "
+        more4 % 100 == 18 -> string1 += "восемнадцать "
+        more4 % 100 == 19 -> string1 += "девятнадцать "
+        more4 % 100 / 10 == 2 -> string1 += "двадцать "
+        more4 % 100 / 10 == 3 -> string1 += "тридцать "
+        more4 % 100 / 10 == 4 -> string1 += "сорок "
+        more4 % 100 / 10 == 5 -> string1 += "пятьдесят "
+        more4 % 100 / 10 == 6 -> string1 += "шестьдесят "
+        more4 % 100 / 10 == 7 -> string1 += "семьдесят "
+        more4 % 100 / 10 == 8 -> string1 += "восемьдесят "
+        more4 % 100 / 10 == 9 -> string1 += "девяносто "
+    }
+    when {
+        (more4 % 10 == 1) && (more4 % 100 != 11) -> string1 += "одна "
+        (more4 % 10 == 2) && (more4 % 100 != 12) -> string1 += "две "
+        (more4 % 10 == 3) && (more4 % 100 != 13) -> string1 += "три "
+        (more4 % 10 == 4) && (more4 % 100 != 14) -> string1 += "четыре "
+        (more4 % 10 == 5) && (more4 % 100 != 15) -> string1 += "пять "
+        (more4 % 10 == 6) && (more4 % 100 != 16) -> string1 += "шесть "
+        (more4 % 10 == 7) && (more4 % 100 != 17) -> string1 += "семь "
+        (more4 % 10 == 8) && (more4 % 100 != 18) -> string1 += "восемь "
+        (more4 % 10 == 9) && (more4 % 100 != 19) -> string1 += "девять "
+    }
+
+    if (more4 % 10 == 1) string1 += "тысяча "
+    if ((more4 % 10 == 2) || (more4 % 10 == 3) || (more4 % 10 == 4)) string1 += "тысячи "
+    else {
+        if ((more4 % 10 != 1) and (more4 != 2) and (more4 != 3) and (more4 != 4) and (more4 > 0)) string1 += "тысяч "
+    }
+    when {
+        less4 / 100 == 1 -> string2 += "сто "
+        less4 / 100 == 2 -> string2 += "двести "
+        less4 / 100 == 3 -> string2 += "триста "
+        less4 / 100 == 4 -> string2 += "четыреста "
+        less4 / 100 == 5 -> string2 += "пятьсот "
+        less4 / 100 == 6 -> string2 += "шестьсот "
+        less4 / 100 == 7 -> string2 += "семьсот "
+        less4 / 100 == 8 -> string2 += "восьмьсот "
+        less4 / 100 == 9 -> string2 += "девятьсот "
+    }
+    when {
+        less4 % 100 == 10 -> string2 += "десять "
+        less4 % 100 == 11 -> string2 += "одиннадцать "
+        less4 % 100 == 12 -> string2 += "двенадцать "
+        less4 % 100 == 13 -> string2 += "тринадцать "
+        less4 % 100 == 14 -> string2 += "четырнадцать "
+        less4 % 100 == 15 -> string2 += "пятнадцать "
+        less4 % 100 == 16 -> string2 += "шестнадцать "
+        less4 % 100 == 17 -> string2 += "семнадцать "
+        less4 % 100 == 18 -> string2 += "восемнадцать "
+        less4 % 100 == 19 -> string2 += "девятнадцать "
+        less4 % 100 / 10 == 2 -> string2 += "двадцать "
+        less4 % 100 / 10 == 3 -> string2 += "тридцать "
+        less4 % 100 / 10 == 4 -> string2 += "сорок "
+        less4 % 100 / 10 == 5 -> string2 += "пятьдесят "
+        less4 % 100 / 10 == 6 -> string2 += "шестьдесят "
+        less4 % 100 / 10 == 7 -> string2 += "семьдесят "
+        less4 % 100 / 10 == 8 -> string2 += "восемьдесят "
+        less4 % 100 / 10 == 9 -> string2 += "девяносто "
+    }
+    when {
+        (less4 % 10 == 1) && (less4 % 100 != 11) -> string2 += "один "
+        (less4 % 10 == 2) && (less4 % 100 != 12) -> string2 += "два "
+        (less4 % 10 == 3) && (less4 % 100 != 13) -> string2 += "три "
+        (less4 % 10 == 4) && (less4 % 100 != 14) -> string2 += "четыре "
+        (less4 % 10 == 5) && (less4 % 100 != 15) -> string2 += "пять "
+        (less4 % 10 == 6) && (less4 % 100 != 16) -> string2 += "шесть "
+        (less4 % 10 == 7) && (less4 % 100 != 17) -> string2 += "семь "
+        (less4 % 10 == 8) && (less4 % 100 != 18) -> string2 += "восемь "
+        (less4 % 10 == 9) && (less4 % 100 != 19) -> string2 += "девять "
+    }
+    if (less4 > 0) {
+        string2 = string2.substring(0, string2.length - 1)
+    } else {
+        string1 = string1.substring(0, string1.length - 1)
+    }
+    return string1 + string2
+}
+
+
+
+
+
+
