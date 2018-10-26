@@ -2,9 +2,8 @@
 
 package lesson4.task1
 
-import kotlinx.html.attributes.stringSetDecode
 import lesson1.task1.discriminant
-import kotlin.math.pow
+import java.lang.Math.pow
 import kotlin.math.sqrt
 
 /**
@@ -151,13 +150,8 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
-fun times(a: List<Double>, b: List<Double>): Double {
-    var result = 0.0
-    if (b.isEmpty()) return 0.0
-    else for (i in 0 until b.size) result += a[i] * b[i]
-    return result
-}
-
+fun times(a: List<Double>, b: List<Double>): Double =
+        (a zip b).fold(0.0) {previousResult, element -> previousResult + element.first * element.second}
 /**
  * Средняя
  *
@@ -166,12 +160,10 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
  */
-fun polynom(p: List<Double>, x: Double): Double {
-    if (p.isEmpty()) 0.0
-    var result = 0.0
-    for (i in 0 until p.size) result += p[i] * x.pow(i)
-    return result
+fun polynom(p: List<Double>, x: Double): Double = p.withIndex().fold(0.0) {
+    previousResult, element -> previousResult + element.value * pow(x, element.index.toDouble())
 }
+
 
 /**
  * Средняя
@@ -294,11 +286,11 @@ fun threeToRussian(n: Int): String {
     var result = numeralToRussian(n % 10)
     when (x % 10) {
         1 -> {
-            when (n % 10){
+            when (n % 10) {
                 1, 3 -> result = numeralToRussian(n % 10) + "надцать"
                 2 -> result = " двенадцать"
                 0 -> result = " десять"
-                else ->{
+                else -> {
                     var str = numeralToRussian(n % 10)
                     str = str.substring(0, str.length - 1)
                     result = str + "надцать"
@@ -311,7 +303,7 @@ fun threeToRussian(n: Int): String {
         9 -> result = " девяносто" + result
     }
     x /= 10
-    when (x % 10){
+    when (x % 10) {
         1 -> result = " сто" + result
         2 -> result = " двести" + result
         3, 4 -> result = numeralToRussian(x % 10) + "ста" + result
@@ -345,7 +337,7 @@ fun russian(n: Int): String {
             }
         }
     }
-    result = result +threeToRussian(n % 1000)
+    result = result + threeToRussian(n % 1000)
     result = result.substring(1, result.length)
 
     return result
