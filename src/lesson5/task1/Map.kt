@@ -206,7 +206,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
-    for ((value, key) in b) {
+    for ((key, value) in b) {
         if (a[key] == value) a.remove(key)
     }
 }
