@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import kotlin.math.max
+
 /**
  * Пример
  *
@@ -94,7 +96,16 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val anotherMap = mutableMapOf<String, String>()
+    anotherMap.putAll(mapA)
+    for ((name, numeric) in mapB) {
+        if (name in anotherMap && anotherMap[name] != numeric)
+            anotherMap[name] = anotherMap[name] + ", " + numeric
+        else anotherMap[name] = numeric
+    }
+    return anotherMap
+}
 
 /**
  * Простая
@@ -118,7 +129,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = a.all{
+    (key, value) -> b[key] == value
+}
+
+
+
 
 /**
  * Средняя
@@ -189,14 +205,19 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
+    for ((value, key) in b) {
+        if (a[key] == value) a.remove(key)
+    }
+}
 
 /**
  * Простая
  *
  * Для двух списков людей найти людей, встречающихся в обоих списках
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> =
+        a.toSet().intersect(b.toSet()).toList()
 
 /**
  * Средняя
@@ -251,7 +272,15 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val mapOfList = mutableMapOf<Int, Int>()
+    for (i in 0 until list.size) {
+        if (mapOfList[number - list[i]] != null)
+            return Pair((mapOfList[number - list[i]] ?: 0), i)
+        mapOfList[list[i]] = i
+    }
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная
@@ -272,4 +301,39 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    var reply = setOf<String>()
+    var mass: Int
+    var cost1: Int
+    val countTreas = treasures.size + 1
+    val countSac = capacity + 1
+    val cost = Array(countTreas) { Array(countSac) { 0 } }
+    for (i in 0 until countTreas)
+        cost[i][0] = 0
+    for (i in 0 until countSac)
+        cost[0][i] = 0
+    for (i in 1 until countTreas) {
+        for (m in 1 until countSac) {
+            mass = treasures.values.toList()[i - 1].first
+            cost1 = treasures.values.toList()[i - 1].second
+            if (mass <= m)
+                cost[i][m] = max(cost[i - 1][m], cost[i - 1][m - mass] + cost1)
+            else
+                cost[i][m] = cost[i - 1][m]
+        }
+    }
+    fun findAns(k: Int, s: Int) {
+        if (cost[k][s] == 0)
+            return
+        if (cost[k - 1][s] == cost[k][s])
+            findAns(k - 1, s)
+        else {
+            findAns(k - 1, s - treasures.values.toList()[k - 1].first)
+            reply += treasures.keys.toList()[k - 1]
+        }
+    }
+    findAns(countTreas - 1, countSac - 1)
+    return reply
+}
+
+

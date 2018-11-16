@@ -49,12 +49,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -71,7 +69,65 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    try {
+
+        val strToSplit = str.split(" ")
+        val digitMonth = convert(strToSplit[1])
+        val day = strToSplit[0].toInt()
+        val year = strToSplit[2].toInt()
+
+
+        if (day !in 1..daysToMonth(digitMonth, year)) {
+            throw IllegalArgumentException()
+        }
+
+        return String.format("%02d.%02d.%d", day, digitMonth, year)
+    } catch (e: IndexOutOfBoundsException) {
+        return ""
+    } catch (e: IllegalArgumentException) {
+        return ""
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+
+}
+
+fun daysToMonth(month: Int, year: Int): Int =
+        when (month) {
+            2 -> if (((year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0)))) 29 else 28
+            1 -> 31
+            3 -> 31
+            4 -> 30
+            5 -> 31
+            6 -> 30
+            7 -> 31
+            8 -> 31
+            9 -> 30
+            10 -> 31
+            11 -> 30
+            12 -> 31
+            else -> 0
+        }
+
+
+fun convert(str: String): Int =
+        when (str) {
+            "января" -> 1
+            "февраля" -> 2
+            "марта" -> 3
+            "апреля" -> 4
+            "мая" -> 5
+            "июня" -> 6
+            "июля" -> 7
+            "августа" -> 8
+            "сентября" -> 9
+            "октября" -> 10
+            "ноября" -> 11
+            "декабря" -> 12
+            else -> throw IllegalArgumentException()
+        }
+
 
 /**
  * Средняя
@@ -97,7 +153,12 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    if (!phone.matches(Regex("""^\+?[ \d\-\(\)]{1,}$"""))) return ""
+    return phone.replace(" ", "").replace("-", "").replace("(", "")
+            .replace(")", "")
+}
+
 
 /**
  * Средняя
@@ -123,6 +184,7 @@ fun bestLongJump(jumps: String): Int = TODO()
  */
 fun bestHighJump(jumps: String): Int = TODO()
 
+
 /**
  * Сложная
  *
@@ -143,7 +205,14 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    var wd = str.toLowerCase()
+    var word = wd.split(" ")
+    var index = 0
+    for (i in 0 until word.size - 1)
+        if (word[i] == word[i + 1]) return index else index += word[i].length + 1
+    return -1
+}
 
 /**
  * Сложная
