@@ -85,7 +85,7 @@ fun dateStrToDigit(str: String): String {
         return String.format("%02d.%02d.%d", day, digitMonth, year)
     } catch (e: IndexOutOfBoundsException) {
         return ""
-    } catch (e: IllegalArgumentException) {
+    } catch(e: IllegalArgumentException) {
         return ""
     } catch (e: NumberFormatException) {
         return ""
@@ -93,7 +93,7 @@ fun dateStrToDigit(str: String): String {
 
 }
 
-fun daysToMonth(month: Int, year: Int): Int =
+fun daysToMonth (month: Int, year: Int): Int =
         when (month) {
             2 -> if (((year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0)))) 29 else 28
             1 -> 31
@@ -209,7 +209,7 @@ fun firstDuplicateIndex(str: String): Int {
     var wd = str.toLowerCase()
     var word = wd.split(" ")
     var index = 0
-    for (i in 0 until word.size - 1)
+    for(i in 0 until word.size - 1)
         if (word[i] == word[i + 1]) return index else index += word[i].length + 1
     return -1
 }
