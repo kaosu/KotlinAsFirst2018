@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 /**
  * Пример
  *
@@ -69,49 +71,7 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String {
-    try {
-
-        val strToSplit = str.split(" ")
-        val digitMonth = convert(strToSplit[1])
-        val day = strToSplit[0].toInt()
-        val year = strToSplit[2].toInt()
-
-
-        if (day !in 1..daysToMonth(digitMonth, year)) {
-            throw IllegalArgumentException()
-        }
-
-        return String.format("%02d.%02d.%d", day, digitMonth, year)
-    } catch (e: IndexOutOfBoundsException) {
-        return ""
-    } catch(e: IllegalArgumentException) {
-        return ""
-    } catch (e: NumberFormatException) {
-        return ""
-    }
-
-}
-
-fun daysToMonth (month: Int, year: Int): Int =
-        when (month) {
-            2 -> if (((year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0)))) 29 else 28
-            1 -> 31
-            3 -> 31
-            4 -> 30
-            5 -> 31
-            6 -> 30
-            7 -> 31
-            8 -> 31
-            9 -> 30
-            10 -> 31
-            11 -> 30
-            12 -> 31
-            else -> 0
-        }
-
-
-fun convert(str: String): Int =
+fun convertToDigit(str: String): Int =
         when (str) {
             "января" -> 1
             "февраля" -> 2
@@ -127,6 +87,27 @@ fun convert(str: String): Int =
             "декабря" -> 12
             else -> throw IllegalArgumentException()
         }
+fun dateStrToDigit(str: String): String {
+    try {
+
+        val strToSplit = str.split(" ")
+        val digitMonth = convertToDigit(strToSplit[1])
+        val day = strToSplit[0].toInt()
+        val year = strToSplit[2].toInt()
+
+
+        if (day !in 1..daysInMonth(digitMonth, year)) {
+            throw IllegalArgumentException()
+        }
+
+
+        return String.format("%02d.%02d.%d", day, digitMonth, year)
+    } catch (e: Exception) {
+        return ""
+    }
+}
+
+
 
 
 /**
@@ -154,10 +135,14 @@ fun dateDigitToStr(digital: String): String = TODO()
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    if (!phone.matches(Regex("""^\+?[ \d\-\(\)]{1,}$"""))) return ""
-    return phone.replace(" ", "").replace("-", "").replace("(", "")
-            .replace(")", "")
+    if (Regex("""(\+?|\d)\d+?\s*(\(\d+\))?((\s*-*)*\d+)+""").matches(phone))
+        return phone.replace(Regex("""(\s)|(-)|(\()|(\))"""), "")
+    return ""
 }
+
+
+
+
 
 
 /**
@@ -206,8 +191,8 @@ fun plusMinus(expression: String): Int = TODO()
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
 fun firstDuplicateIndex(str: String): Int {
-    var wd = str.toLowerCase()
-    var word = wd.split(" ")
+    val wd = str.toLowerCase()
+    val word = wd.split(" ")
     var index = 0
     for(i in 0 until word.size - 1)
         if (word[i] == word[i + 1]) return index else index += word[i].length + 1
@@ -276,4 +261,61 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    var position = cells / 2
+    val cArray = Array(cells) { 0 }
+    var count = 0
+    var maxComands = 0
+
+    if (commands.isNotEmpty())
+        if (!commands.contains(Regex("""\+|-|>|<|\[|]|\s""")))
+            throw IllegalArgumentException()
+
+    commands.forEach {
+        when (it) {
+            '[' -> count++
+            ']' -> count--
+        }
+    }
+    if (count != 0)
+        throw IllegalArgumentException()
+
+    while (commands.length > count && limit > maxComands){
+        val currentCommand = commands[count]
+        when (currentCommand) {
+            ' ' -> {}
+            '<' -> position--
+            '>' -> position++
+            '-' -> cArray[position]--
+            '+' -> cArray[position]++
+            '[' -> {
+                if (cArray[position] == 0){
+                    var passFactor = 1
+                    while (passFactor > 0){
+                        count++
+                        if (commands[count] == '[') passFactor++
+                        else if (commands[count] == ']') passFactor--
+                    }
+                }
+            }
+            ']' -> {
+                if (cArray[position] != 0) {
+                    var passFactor = 1
+                    while(passFactor > 0){
+                        count--
+                        if (commands[count] == ']') passFactor++
+                        else if(commands[count] == '[') passFactor--
+                    }
+                }
+            }
+            else -> throw IllegalArgumentException()
+        }
+        count++
+        maxComands++
+        if (position !in 0 until cells)
+            throw IllegalStateException()
+    }
+    return cArray.toList()
+
+}
+

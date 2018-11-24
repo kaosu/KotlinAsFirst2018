@@ -97,8 +97,7 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    val anotherMap = mutableMapOf<String, String>()
-    anotherMap.putAll(mapA)
+    val anotherMap = mapA.toMutableMap()
     for ((name, numeric) in mapB) {
         if (name in anotherMap && anotherMap[name] != numeric)
             anotherMap[name] = anotherMap[name] + ", " + numeric
@@ -129,9 +128,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = a.all{
-    (key, value) -> b[key] == value
-}
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = a.all { (key, value) -> b[key] == value }
+
+
+
+
+
 
 
 
