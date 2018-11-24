@@ -72,7 +72,7 @@ fun main(args: Array<String>) {
  * входными данными.
  */
 fun convertToDigit(str: String): Int =
-        when (str) {
+        when (str){
             "января" -> 1
             "февраля" -> 2
             "марта" -> 3
