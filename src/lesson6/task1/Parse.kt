@@ -72,7 +72,7 @@ fun main(args: Array<String>) {
  * входными данными.
  */
 fun convertToDigit(str: String): Int =
-        when (str){
+        when (str) {
             "января" -> 1
             "февраля" -> 2
             "марта" -> 3
@@ -87,6 +87,7 @@ fun convertToDigit(str: String): Int =
             "декабря" -> 12
             else -> throw IllegalArgumentException()
         }
+
 fun dateStrToDigit(str: String): String {
     try {
 
@@ -106,8 +107,6 @@ fun dateStrToDigit(str: String): String {
         return ""
     }
 }
-
-
 
 
 /**
@@ -140,10 +139,6 @@ fun flattenPhoneNumber(phone: String): String {
         return phone.replace(Regex("""(\s)|(-)|(\()|(\))"""), "")
     return ""
 }
-
-
-
-
 
 
 /**
@@ -195,7 +190,7 @@ fun firstDuplicateIndex(str: String): Int {
     val wd = str.toLowerCase()
     val word = wd.split(" ")
     var index = 0
-    for(i in 0 until word.size - 1)
+    for (i in 0 until word.size - 1)
         if (word[i] == word[i + 1]) return index else index += word[i].length + 1
     return -1
 }
@@ -271,28 +266,34 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     if (commands.isNotEmpty())
         if (!commands.contains(Regex("""\+|-|>|<|\[|]|\s""")))
             throw IllegalArgumentException()
-
+    //проверка на сбансированность скобок
     commands.forEach {
         when (it) {
             '[' -> count++
             ']' -> count--
         }
     }
-    if (count != 0)
+    if (count < 0)
         throw IllegalArgumentException()
+    if (count > 0) {
+        throw IllegalArgumentException()
+    }
 
-    while (commands.length > count && limit > maxComands){
+
+
+    while (commands.length > count && limit > maxComands) {
         val currentCommand = commands[count]
         when (currentCommand) {
-            ' ' -> {}
+            ' ' -> {
+            }
             '<' -> position--
             '>' -> position++
             '-' -> cArray[position]--
             '+' -> cArray[position]++
             '[' -> {
-                if (cArray[position] == 0){
+                if (cArray[position] == 0) {
                     var passFactor = 1
-                    while (passFactor > 0){
+                    while (passFactor > 0) {
                         count++
                         if (commands[count] == '[') passFactor++
                         else if (commands[count] == ']') passFactor--
@@ -302,10 +303,10 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             ']' -> {
                 if (cArray[position] != 0) {
                     var passFactor = 1
-                    while(passFactor > 0){
+                    while (passFactor > 0) {
                         count--
                         if (commands[count] == ']') passFactor++
-                        else if(commands[count] == '[') passFactor--
+                        else if (commands[count] == '[') passFactor--
                     }
                 }
             }
