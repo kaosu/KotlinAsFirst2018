@@ -277,8 +277,6 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         throw IllegalArgumentException()
     }
 
-
-
     while (commands.length > count && limit > maxComands) {
         val currentCommand = commands[count]
         when (currentCommand) {
