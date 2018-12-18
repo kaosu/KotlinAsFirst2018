@@ -167,7 +167,7 @@ fun toAngel(angle: Double): Double =
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line {
+fun lineBySegment(s: Segment): Line  {
     var angel = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
     angel = toAngel(angel)
     return Line(s.begin, angel)
