@@ -155,6 +155,12 @@ class Line private constructor(val b: Double, val angle: Double) {
 
     override fun toString() = "Line(${cos(angle)} * y = ${sin(angle)} * x + $b)"
 }
+fun toAngel(angle: Double): Double =
+        when {
+            angle >= PI -> angle - PI
+            angle >= 0 -> angle
+            else -> angle + PI
+        }
 
 /**
  * Средняя
@@ -162,14 +168,9 @@ class Line private constructor(val b: Double, val angle: Double) {
  * Построить прямую по отрезку
  */
 fun lineBySegment(s: Segment): Line {
-    var angle = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
-    when {
-        angle == PI -> angle -= PI
-        angle < 0 -> angle += PI
-        else -> IllegalArgumentException()
-
-    }
-    return Line(s.begin, angle)
+    var angel = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
+    angel = toAngel(angel)
+    return Line(s.begin, angel)
 }
 
 /**
