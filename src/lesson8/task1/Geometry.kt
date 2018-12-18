@@ -162,13 +162,9 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line  {
-    var angle = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
-    when {
-        angle < 0 -> angle += PI
-        angle == PI -> angle -= PI
-    }
-
+fun lineBySegment(s: Segment): Line {
+    var angle = atan2((s.end.y - s.begin.y), (s.end.x - s.begin.x))
+    if (angle < 0) angle += PI else if (angle == PI) angle -= PI
     return Line(s.begin, angle)
 }
 
@@ -184,7 +180,12 @@ fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+fun bisectorByPoints(a: Point, b: Point): Line {
+    val c = Point((a.y + b.y) / 2,(a.x + b.x) / 2 )
+    val angle = atan((a.y - b.y) / (a.x - b.x)) + PI / 2
+    val sAngel = angle % PI
+    return Line(c, sAngel)
+}
 
 /**
  * Средняя
@@ -203,10 +204,7 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
-    val point = bisectorByPoints(a, b).crossPoint(bisectorByPoints(b, c))
-    return Circle(point, point.distance(a))
-}
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
 
 /**
  * Очень сложная
