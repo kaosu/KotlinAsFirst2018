@@ -273,9 +273,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             ']' -> count--
         }
     }
-    if (count < 0)
-        throw IllegalArgumentException()
-    if (count > 0) {
+    if (count != 0) {
         throw IllegalArgumentException()
     }
 
